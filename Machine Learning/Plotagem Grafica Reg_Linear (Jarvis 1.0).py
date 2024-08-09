@@ -15,8 +15,8 @@ reg = LinearRegression()
 
 # Separar os dados em variáveis independentes (X) e variável dependente (y)
 # você precisa usar um colchete para juntar as duas colunas do dataframe goau, o que resulta em um array bidimensional.
-X = goau[['    Open    ', '    Volume    ']].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
-y = goau['    Close    '].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
+X = goau[['Open', 'Volume']].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
+y = goau['Close'].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
 data = goau['Date']
 
 
@@ -73,16 +73,16 @@ Arquivo =f"C:\\Users\\julio.andrade\\OneDrive - bbce.com.br\\Área de Trabalho\\
 #Arquivo=f"C:\\Users\\julio.andrade\\OneDrive - bbce.com.br\\Autorregulação\\BBCE\\Acompanhamento de Mercado\\df_condicao2.csv"
 df_fim.to_csv(Arquivo, sep=';',decimal=',',index=True,encoding="latin1")
 
-# Converter as colunas 'Previsão' e '    Close    ' em dados numéricos usando o método astype() e tirar os R$ e , da coluna Close
+# Converter as colunas 'Previsão' e 'Close' em dados numéricos usando o método astype() e tirar os R$ e , da coluna Close
 df_fim['Previsão'] = df_fim['Previsão'].astype(float)
-df_fim['    Close    '] = df_fim['    Close    '].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
-df_fim['    Close    '] = df_fim['    Close    '].astype(float)
+df_fim['Close'] = df_fim['Close'].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
+df_fim['Close'] = df_fim['Close'].astype(float)
 
 # Importar a biblioteca scipy e a função interp1d
 from scipy import interpolate
 
 # Criar uma função de interpolação com os dados de 'Previsão' e '    Close    '
-f = interpolate.interp1d(df_fim['Previsão'], df_fim['    Close    '])
+f = interpolate.interp1d(df_fim['Previsão'], df_fim['Close'])
 
 # Criar um array de novos valores de X para interpolar
 xnew = np.linspace(min(df_fim['Previsão']), max(df_fim['Previsão']), num=246)
@@ -91,7 +91,7 @@ xnew = np.linspace(min(df_fim['Previsão']), max(df_fim['Previsão']), num=246)
 ynew = f(xnew)
 
 # Plotar o gráfico de análise por linhas, sendo uma de cor vermelha e a outra cor azul
-plt.plot(df_fim['Previsão'], df_fim['    Close    '], color='red', linestyle='-', label='Dados reais')
+plt.plot(df_fim['Previsão'], df_fim['Close'], color='red', linestyle='-', label='Dados reais')
 plt.plot(xnew, ynew, color='blue', linestyle='--', label='Previsões')
 plt.xlabel('Previsão')
 plt.ylabel('Close')
