@@ -15,8 +15,8 @@ reg = LinearRegression()
 
 # Separar os dados em variáveis independentes (X) e variável dependente (y)
 # você precisa usar um colchete para juntar as duas colunas do dataframe goau, o que resulta em um array bidimensional.
-X = goau[['    Open    ', '    Volume    ', '    Open    ', '    High    ']].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
-y = goau['    Close    '].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
+X = goau[['Open', 'Volume', 'High']].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
+y = goau['Close'].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
 data = goau['Date']
 
 
@@ -81,8 +81,8 @@ df_fim['    Close    '] = df_fim['    Close    '].astype(float)
 # Importar a biblioteca scipy e a função interp1d
 from scipy import interpolate
 
-# Criar uma função de interpolação com os dados de 'Previsão' e '    Close    '
-f = interpolate.interp1d(df_fim['Previsão'], df_fim['    Close    '])
+# Criar uma função de interpolação com os dados de 'Previsão' e 'Close'
+f = interpolate.interp1d(df_fim['Previsão'], df_fim['Close'])
 
 # Criar um array de novos valores de X para interpolar
 xnew = np.linspace(min(df_fim['Previsão']), max(df_fim['Previsão']), num=246)
