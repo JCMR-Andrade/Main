@@ -10,50 +10,12 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.cluster import KMeans
 import numpy as np
 
-
-# # Gerando dados aleatórios
-# X = np.random.rand(100, 2)
-
-# # Criando um modelo KMeans com 2 clusters
-# kmeans = KMeans(n_clusters=2, n_init=10)
-
-# # Treinando o modelo com os dados
-# kmeans.fit(X)
-
-# # Obtém os labels dos clusters para cada ponto
-# labels = kmeans.labels_
-
-# # Imprimindo os labels
-# print(labels)
-
-
-# modelo = LinearRegression()
-
-# # Carregando o conjunto de dados iris
-# iris = load_iris()
-# X = iris.data
-# y = iris.target
-
-# # Dividindo o conjunto de dados em treino e teste
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-
-# # Criando um modelo de árvore de decisão
-# model = DecisionTreeClassifier(random_state=42)
-
-# # Treinando o modelo
-# model.fit(X_train, y_train)
-
-# # Fazendo previsões com o modelo
-# y_pred = model.predict(X_test)
-
-# # Avaliando a acurácia do modelo
-# accuracy = accuracy_score(y_test, y_pred)
-# print('Acurácia:', accuracy)
-
 goau = pd.read_csv('C:\\Users\\julio.andrade\\OneDrive - bbce.com.br\\Área de Trabalho\\Códigos B3\\Planilhas\\Preços Empresa GOAU4_V1.csv', sep=';')
 
 # Atribuindo as variáveis data, abertura, fechamento e volume os seus valores correspondentes
-data, abertura, fechamento, volume =goau['Date'],  goau['    Open    '].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True), goau['    Close    '].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True), goau['    High    '].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
+data, abertura, fechamento, volume = goau['Date'],  goau['    Open    '].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True), / 
+                                     goau['    Close    '].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True), /
+                                     goau['    High    '].replace('\.', '', regex=True).replace('R\$', '', regex=True).replace(',', '.', regex=True)
 
 # Transformamos os dados em DTYPE FLOAT 64 Para Análise
 goau['Data'] = data
@@ -126,12 +88,9 @@ variância da variável dependente a partir da variável independente.'''
 
 print('R2 Score: %.2f' % r2_score(y_test, y_pred))
 
-'''Visualizando os resultados da regressão linear com scikit-learn#######
+'''Visualizando os resultados da regressão linear com scikit-learn
 Podemos no gráfico abaixo, os pontos pretos que representam os nossos dados reais e em azul a 
-reta de regressão linear do nosso modelo, dá para observar que temos dados um tanto dispersos, 
-o que não faz o nosso modelos performar tão bem. Ao longo dos próximos posts vão entender melhor 
-como melhorar nossos modelos, tratar os dados dispersos, incluir novas variáveis de entrada entre
-outras técnicas que podem ser aplicadas.'''
+reta de regressão linear do nosso modelo.'''
 
 plt.scatter(X_test, y_test,  color='black')
 plt.plot(X_test, y_pred, color='blue', linewidth=3)
