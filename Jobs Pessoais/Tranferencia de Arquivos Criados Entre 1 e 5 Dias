@@ -1,0 +1,34 @@
+import os
+import shutil
+import time
+
+# Função para mover arquivos criados há 1 dia
+def mover_arquivos_antigos(pasta_origem, pasta_destino):
+    # Obtém o timestamp atual
+    agora = time.time()
+
+    # Define o intervalo de 1 dia em segundos (1 dia * 24 horas * 60 minutos * 60 segundos)
+    um_dia = 24 * 60 * 60    # Caso queira alterar os dias, colocar o valor INTEIRO dos dias antes do 24, 15*24*60*60
+
+    # Cria a pasta de destino se ela não existir
+    if not os.path.exists(pasta_destino):
+        os.makedirs(pasta_destino)
+
+    # Itera pelos arquivos na pasta de origem
+    for arquivo in os.listdir(pasta_origem):
+        caminho_arquivo = os.path.join(pasta_origem, arquivo)
+        # Verifica se é um arquivo
+        if os.path.isfile(caminho_arquivo):
+            # Obtém o timestamp de criação do arquivo
+            tempo_criacao = os.path.getctime(caminho_arquivo)
+            # Calcula a diferença de tempo entre agora e a criação do arquivo
+            if agora - tempo_criacao >= um_dia and agora - tempo_criacao <= um_dia + 432000:  # Pegamos com 1 dia até 5 dias de criação
+                # Move o arquivo para a pasta de destino
+                shutil.move(caminho_arquivo, os.path.join(pasta_destino, arquivo))
+                print(f"Movendo arquivo: {arquivo}")
+
+# Exemplo de uso:
+pasta_origem = f'C:'
+pasta_destino = f'C:'
+
+mover_arquivos_antigos(pasta_origem, pasta_destino)
