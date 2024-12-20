@@ -1,0 +1,72 @@
+import cv2
+import numpy as np
+
+# Definimos o tamanho da foto para poder retornar ao tamanho original
+altura = 1080
+largura = 1920
+
+# Carregar a imagem original
+img = cv2.imread('')
+
+# Diminuir a imagem
+# Defina uma escala (exemplo: 0.01 para reduzir para 1% do tamanho original)
+escala = 0.01
+largura_reducao = int(img.shape[1] * escala)
+altura_reducao = int(img.shape[0] * escala)
+dimensoes = (largura_reducao, altura_reducao)
+
+# # Redimensionar com interpolação apropriada para evitar distorção de cores
+img_reduzida = cv2.resize(img, dimensoes, interpolation=cv2.INTER_AREA)
+
+# # Salvar ou trabalhar com a imagem reduzida
+cv2.imwrite(f'.png', img_reduzida)
+
+# Converter a imagem Pillow para um array NumPy
+img_np = np.array(img)
+
+# Redimensionar de volta ao tamanho original usando OpenCV
+img_restaurada = cv2.resize(img_np, (altura, largura), interpolation=cv2.INTER_CUBIC)
+
+# Salvar a imagem restaurada
+cv2.imwrite(f'.png', img_restaurada)
+
+# Abrir a imagem e convertê-la para binário
+with open(f'.png', 'rb') as f:
+    img_binaria = f.read()
+
+# Ver o tamanho da imagem em binário
+print(f"Tamanho da imagem em binário: {len(img_binaria)} bytes")
+
+# Caso queira inserir num SQL
+import sqlite3
+
+# Converte a imagem reduzida para binário
+with open('.jpg', 'rb') as f:
+    img_binaria = f.read()
+
+# Conectar ao banco de dados
+conn = sqlite3.connect('imagens.db')
+cursor = conn.cursor()
+
+# Criar tabela para armazenar a imagem (se não existir)
+cursor.execute('''CREATE TABLE IF NOT EXISTS Imagens (id INTEGER PRIMARY KEY, imagem BLOB)''')
+
+# Inserir a imagem no banco de dados
+cursor.execute('INSERT INTO Imagens (imagem) VALUES (?)', (img_binaria,))
+conn.commit()
+conn.close()
+
+# Conectar ao banco de dados e recuperar a imagem
+conn = sqlite3.connect('imagens.db')
+cursor = conn.cursor()
+
+# Recuperar a imagem da tabela
+cursor.execute('SELECT imagem FROM Imagens WHERE id = ?', (1,))
+img_binaria_recuperada = cursor.fetchone()[0]
+
+# Salvar a imagem binária em um arquivo
+with open('.jpg', 'wb') as f:
+    f.write(img_binaria_recuperada)
+
+conn.close()
+

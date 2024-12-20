@@ -1,0 +1,58 @@
+' " = para fazer comentário 
+para criar uma variavél no phyton, colocar nome = ''
+= usado para atribuição
+
+para criar duas ou mais variavéis -> nome_Completo = ' ' ou nomeCompleto = '' 
+único simbolo aceito para variavél é o _
+tudo que estiver sombreado com vermelho é um erro
+ctrl " - abre e fecha o terminal 
+ctrl F5 - abre e executa
+para executar ctrl"setinha para cima acha o código
+ctrl ; - comentar e descomentar 
+print() - sempre letra minuscula 
+
+todo texto de python vai estar dentro de aspas simples ou duplas
+para entender como texto 
+todo input é texto
+
+print é uma função, vem sempre antes de uma variavel (nome)
+depois da variavél é um método
+
+Title - primeira letra maiuscula 
+capitalize - primeira letra maiuscula
+upper - todas maiusculas
+lower - todas minusculas 
+
+print(len(nome)) - duas funções antes de uma variavél 
+
+str - texto
+int - numero inteiro
+float - numero real 
+
+sleep - usado para automação
+
+ctrl c - interrompe execução 
+
+python doc - toda documentação de python encontra nesse site.
+
+super - so funciona no __init__
+
+para criar alguma coisa com molde usar o metodo __init__ (vantagem, quando chamar o start passa a ser o objeto da classe ex: start = To_do
+
+while True: criar um loop 
+
+/^ [a-z0-9.]+@ [a-z0-9]+\. [a-z]+\. ( [a-z]+)?$/i - regex
+ leonardo.alvez@gg4  
+
+stackoverflow em ingles- dicas de códigos 
+
+ctrl c no terminal - interrompe
+
+self permite que chame o metodo que foi chamado
+
+utf8 - ç e acentuações
+
+w- se não tem arquivo ele cria ou substitui o conteudo caso o arquivo ja exista
+
+dataframe so consegue converter em tabela se ele tem um dicionário 
+

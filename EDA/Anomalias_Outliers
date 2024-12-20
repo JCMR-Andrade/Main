@@ -1,0 +1,126 @@
+import  pandas  as  pd
+import numpy as np
+import plotly.express as px
+import  matplotlib.pyplot as plt
+import datetime
+from datetime import timedelta, date, datetime
+import pandas as pd
+import warnings
+import matplotlib.pyplot as plt
+import numpy as np
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+from googleapiclient.discovery import build
+import pandas as pd
+import os
+import datetime
+from datetime import datetime, timedelta, date
+warnings.filterwarnings('ignore')
+
+# # Ajustar as configurações de exibição
+# pd.set_option('display.max_columns', None)
+# pd.set_option('display.max_rows', None)
+# pd.set_option('display.max_colwidth', None)
+
+hoje = str(date.today().strftime('%d-%m-%Y'))
+ontem = datetime.now() - timedelta(1)
+ontem = str(ontem.strftime('%d-%m-%Y'))
+
+# Carregamos o arquivo
+dados  = pd.read_excel(f'C:\\.xlsx')
+df = pd.DataFrame(dados)
+
+# Limpamos os nomes das colunas que foram alteradas
+df.columns = df.columns.str.strip()
+df.columns = [col.replace('\n', ' ') for col in df.columns]
+
+# Drop na primeira linha caso o Cabeçalho venha mesclado, dropamos colunas e linhas vazias
+df = df.drop([0, 0], axis=0)
+df.dropna(axis=0, inplace=True, thresh=4)
+df.dropna(axis=1, how='all', inplace=True)
+
+# Imprimimos a primeira informação do dataframe
+print(df.iloc[:1])
+
+def colunas_limpas(df, columns, text_to_remove="R$  -   ", replace_value=np.nan):
+    """
+    Limpa o texto específico em colunas do DataFrame e substitui por outro valor (como NaN).
+    
+    Args:
+    - df (pd.DataFrame): O DataFrame a ser processado.
+    - columns (list): Lista de colunas para processar.
+    - text_to_remove (str): Texto que será removido. O padrão é "R$  - ".
+    - replace_value: Valor a ser substituído no lugar do texto removido. Padrão é np.nan.
+    
+    Returns:
+    - pd.DataFrame: DataFrame com as colunas limpas.
+    """
+    # Loop através das colunas especificadas
+    for col in columns:
+        # Substitui o texto especificado pelo valor escolhido (ex: NaN)
+        df[col] = df[col].replace(text_to_remove, replace_value)
+    
+    return df
+
+# Limpamos a coluna para que apenas vallores numéricos permaneçam
+df = colunas_limpas(df, columns=['Nome_da_Coluna'], text_to_remove="-", replace_value=np.nan)
+df['Nome_da_Coluna'] = df['Nome_da_Coluna'].apply(
+    lambda x: float(str(x).replace(',', '').strip()) if isinstance(x, str) else x
+)
+
+# Calcular quartis e IQR
+Q1_C = df['Nome_da_Coluna'].quantile(0.25)
+Q3_C = df['Nome_da_Coluna'].quantile(0.75)
+IQR_C = Q3_C - Q1_C
+
+# Defina um limite para detecção de anomalias (por exemplo, 1,5 vezes IQR)
+limite_inferior_cart = Q1_C - 1.5 * IQR_C
+limite_superior_cart = Q3_C + 1.5 * IQR_C
+
+# Identificar anomalias
+anomalias_cart = df[(df['Nome_da_Coluna'] < limite_inferior_cart) | (df['Nome_da_Coluna'] > limite_superior_cart)]
+
+plt.figure(figsize=(10, 6))
+plt.plot(df.index, df['Nome_da_Coluna'], label='Data Values', marker='o', linestyle='-', color='blue')
+
+# Plotar anomalias
+plt.scatter(anomalias_cart.index, anomalias_cart['Nome_da_Coluna'], color='red', label='Anomalias')
+
+# Limites tracejados
+plt.axhline(y=limite_inferior_cart, color='green', linestyle='--', label='Banda Inferior')
+plt.axhline(y=limite_superior_cart, color='orange', linestyle='--', label='Banda Superior')
+
+# Colocamos os nomes nas observações que foram classificadas como Outlier
+for idx, row in anomalias_cart.iterrows():
+    plt.text(idx, row['Nome_da_Coluna'], str(df.loc[idx, 'Nome_da_Coluna2']), fontsize=9, color='red')
+
+plt.legend()
+plt.show()
+
+# Criamos um gráfico pelo Plotly.Express
+fig = px.line(df, x="", y="Nome_da_Coluna", title="")
+fig.add_hline(y=limite_inferior_cart)
+fig.add_hline(y=limite_superior_cart)
+fig.update_traces(mode="markers+lines", hovertemplate=None)
+fig.update_layout(hovermode="x")
+
+fig.show()
+
+# Imprima as anomalias
+print ("Anomalias:" )
+print (anomalias_cart)
+
+# Caminho onde o arquivo será salvo
+caminho_arquivo = f"C:\\.xlsx"
+
+# # Salvar o DataFrame como arquivo Excel
+df.to_excel(caminho_arquivo, index=False, sheet_name='Lista Original')
+
+# Escreva os DataFrames em diferentes planilhas no mesmo arquivo Excel
+with pd.ExcelWriter(caminho_arquivo, mode='a', engine='openpyxl', if_sheet_exists='replace') as writer:
+    anomalias.to_excel(writer, sheet_name='Anomalias Nome_da_Coluna')
+    anomalias2.to_excel(writer, sheet_name='Anomalias Nome_da_Coluna')
+    anomalias_cart.to_excel(writer, sheet_name='Anomalias Nome_da_Coluna')
+    # duplicados.to_excel(writer, sheet_name='Valores Duplicados')
+    # df_nulos.to_excel(writer, sheet_name='Valores Nulos')
