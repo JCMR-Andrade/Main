@@ -1,0 +1,51 @@
+import os.path
+import pickle
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+
+# Definir os escopos de acesso
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
+
+# Nome do arquivo de token
+TOKEN_FILE = 'token.json'
+
+creds = None
+# Verificar se o token já foi salvo
+if os.path.exists(TOKEN_FILE):
+    with open(TOKEN_FILE, 'rb') as token:
+        creds = pickle.load(token)
+# Se não houver token válido, obter um novo
+if not creds or not creds.valid:
+    if creds and creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+    else:
+        flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+        creds = flow.run_local_server(port=0)
+    # Salvar as credenciais para reutilização futura
+    with open(TOKEN_FILE, 'wb') as token:
+        pickle.dump(creds, token)
+
+# Construir o serviço da API Google Sheets
+service = build('sheets', 'v4', credentials=creds)
+
+# ID da planilha e o intervalo que você quer acessar
+SPREADSHEET_ID = 'sua_planilha_id'
+RANGE_NAME = 'Nome_Da_Aba!Número_Da_Linha:Número_Da_Coluna'
+
+# Fazer a solicitação para a API
+sheet = service.spreadsheets()
+result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
+values = result.get('values', [])
+
+# Imprimir os dados da planilha
+if not values:
+    print('Nenhum dado encontrado.')
+else:
+    for row in values:
+        print(row)
+
+# Exemplo de escrita na planilha
+nova_linha = ["Dado 1", "Dado 2", "Dado 3"]
+sheet.values().append(spreadsheetId=SPREADSHEET_ID, range='Página1!A1', valueInputOption='RAW', body={'values': [nova_linha]}).execute()
