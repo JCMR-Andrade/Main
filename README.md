@@ -27,11 +27,9 @@ End-to-end fraud detection pipeline focused on risk, cost trade-offs and decisio
 
 This project explores:
 
-why accuracy fails in highly imbalanced problems;
-
-how threshold tuning changes operational outcomes;
-
-how cost simulation and probability calibration impact real decisions;
+  - why accuracy fails in highly imbalanced problems;
+  - how threshold tuning changes operational outcomes;
+  - how cost simulation and probability calibration impact real decisions;
 
 **🔗 Repository:**
 https://github.com/JCMR-Andrade/Fraud-Detection
