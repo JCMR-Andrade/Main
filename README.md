@@ -38,7 +38,8 @@ https://github.com/JCMR-Andrade/Fraud-Detection
 
 **📝 Article:**
 Why Accuracy Fails in Real-World Fraud Detection (Medium) (Portuguese):
-[https://medium.com/@julio.pimp/por-que-accuracy-falha-em-projetos-reais-de-detec%C3%A7%C3%A3o-de-fraudes-ae405622aa2c?postPublishedType=initial]
+
+https://medium.com/@julio.pimp/por-que-accuracy-falha-em-projetos-reais-de-detec%C3%A7%C3%A3o-de-fraudes-ae405622aa2c?postPublishedType=initial
 
 **Financial Data Lakehouse (coming soon)**
 
@@ -72,4 +73,4 @@ and clear metric definitions.
 
 **## 🌎 Links**
 
-- LinkedIn: [https://www.linkedin.com/in/julio-andrade-mba-6253288b]
+- LinkedIn: https://www.linkedin.com/in/julio-andrade-mba-6253288b
