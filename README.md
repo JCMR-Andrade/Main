@@ -22,9 +22,6 @@ reliability, and business impact**.
 
 ## 📌 Featured Projects
 
-> This section highlights projects that demonstrate senior-level ownership,
-architecture thinking, and production-oriented data solutions.
-
 - **Financial Data Lakehouse**  
   End-to-end data pipeline simulating a modern lakehouse architecture,
   from raw ingestion to analytical datasets and executive dashboards.
