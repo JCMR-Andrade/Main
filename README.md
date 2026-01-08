@@ -58,6 +58,7 @@ and financial use cases.
 
 Power BI, Plotly or Looker Studio dashboards designed for leadership, with strong data modeling
 and clear metric definitions.
+
 ---
 
 **## 📈 Professional Focus**
