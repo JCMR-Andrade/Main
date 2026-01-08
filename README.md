@@ -56,7 +56,7 @@ and financial use cases.
 
 **Executive BI Dashboards (coming soon)**
 
-Power BI/Plotly dashboards designed for leadership, with strong data modeling
+Power BI, Plotly and/or Looker Studio dashboards designed for leadership, with strong data modeling
 and clear metric definitions.
 ---
 
